@@ -13,7 +13,7 @@ import kz.dehaliboch.repository.ToDoRepository
 fun Application.configureToDoRouting() {
     routing {
 
-        val toDoRepository : ToDoRepository = InMemoryToDoRepository()
+        val toDoRepository: ToDoRepository = InMemoryToDoRepository()
 
         get(TO_DO_PATH) {
             call.respond(toDoRepository.getAllToDo())
