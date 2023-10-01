@@ -6,12 +6,13 @@ import io.ktor.server.routing.*
 import kz.dehaliboch.comon.ID
 import kz.dehaliboch.comon.TO_DO_PATH
 import kz.dehaliboch.comon.TO_DO_PATH_BY_ID
+import kz.dehaliboch.entities.ToDo
 
 fun Application.configureToDoRouting() {
     routing {
 
         get(TO_DO_PATH) {
-
+            call.respond(todoList)
         }
 
         get(TO_DO_PATH_BY_ID) {
@@ -32,3 +33,16 @@ fun Application.configureToDoRouting() {
         }
     }
 }
+
+val todoList = listOf(
+    ToDo(1, "Сходить в магазин", false),
+    ToDo(2, "Подготовить обед", false),
+    ToDo(3, "Почистить дом", false),
+    ToDo(4, "Прочитать книгу", false),
+    ToDo(5, "Сделать уроки", false),
+    ToDo(6, "Посмотреть фильм", false),
+    ToDo(7, "Сходить в спортзал", false),
+    ToDo(8, "Созвониться с другом", false),
+    ToDo(9, "Подготовить презентацию", false),
+    ToDo(10, "Посадить цветы", false)
+)
