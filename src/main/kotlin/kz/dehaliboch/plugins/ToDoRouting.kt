@@ -1,23 +1,46 @@
 package kz.dehaliboch.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kz.dehaliboch.comon.ID
 import kz.dehaliboch.comon.TO_DO_PATH
 import kz.dehaliboch.comon.TO_DO_PATH_BY_ID
-import kz.dehaliboch.entities.ToDo
+import kz.dehaliboch.repository.InMemoryToDoRepository
+import kz.dehaliboch.repository.ToDoRepository
 
 fun Application.configureToDoRouting() {
     routing {
 
+        val toDoRepository : ToDoRepository = InMemoryToDoRepository()
+
         get(TO_DO_PATH) {
-            call.respond(todoList)
+            call.respond(toDoRepository.getAllToDo())
         }
 
         get(TO_DO_PATH_BY_ID) {
-            val id = call.parameters[ID]
-            call.respondText("TO-DO list details for TO-DO #$id")
+            val id = call.parameters[ID]?.toIntOrNull()
+
+            if (id == null) {
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    "id need to be a number"
+                )
+                return@get
+            }
+
+            val toDo = toDoRepository.getToDoById(id)
+
+            if (toDo == null) {
+                call.respond(
+                    HttpStatusCode.NotFound,
+                    "Found no To-Do for provided id #$id"
+                )
+                return@get
+            }
+
+            call.respond(toDo)
         }
 
         post(TO_DO_PATH) {
@@ -33,16 +56,3 @@ fun Application.configureToDoRouting() {
         }
     }
 }
-
-val todoList = listOf(
-    ToDo(1, "Сходить в магазин", false),
-    ToDo(2, "Подготовить обед", false),
-    ToDo(3, "Почистить дом", false),
-    ToDo(4, "Прочитать книгу", false),
-    ToDo(5, "Сделать уроки", false),
-    ToDo(6, "Посмотреть фильм", false),
-    ToDo(7, "Сходить в спортзал", false),
-    ToDo(8, "Созвониться с другом", false),
-    ToDo(9, "Подготовить презентацию", false),
-    ToDo(10, "Посадить цветы", false)
-)
