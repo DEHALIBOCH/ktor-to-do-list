@@ -1,4 +1,3 @@
-
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -31,4 +30,8 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-gson:$ktor_version")
+
+    implementation("mysql:mysql-connector-java:8.0.11")
+    implementation("org.ktorm:ktorm-core:3.2.0")
+    implementation("org.ktorm:ktorm-support-mysql:3.2.0")
 }

@@ -8,14 +8,15 @@ import io.ktor.server.routing.*
 import kz.dehaliboch.comon.ID
 import kz.dehaliboch.comon.TO_DO_PATH
 import kz.dehaliboch.comon.TO_DO_PATH_BY_ID
+import kz.dehaliboch.database.DatabaseManager
 import kz.dehaliboch.entities.ToDoDraft
-import kz.dehaliboch.repository.InMemoryToDoRepository
+import kz.dehaliboch.repository.MySQLToDoRepository
 import kz.dehaliboch.repository.ToDoRepository
 
 fun Application.configureToDoRouting() {
     routing {
 
-        val toDoRepository: ToDoRepository = InMemoryToDoRepository()
+        val toDoRepository: ToDoRepository = MySQLToDoRepository(DatabaseManager())
 
         get(TO_DO_PATH) {
             call.respond(toDoRepository.getAllToDo())
